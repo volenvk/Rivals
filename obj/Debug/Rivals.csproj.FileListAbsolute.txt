@@ -1,0 +1,15 @@
+C:\skb\Rivals.csproj\bin\Debug\Dungeons\Dungeon1.txt
+C:\skb\Rivals.csproj\bin\Debug\Dungeons\Dungeon2.txt
+C:\skb\Rivals.csproj\bin\Debug\Dungeons\Dungeon3.txt
+C:\skb\Rivals.csproj\bin\Debug\Dungeons\Dungeon4.txt
+C:\skb\Rivals.csproj\bin\Debug\Rivals.exe.config
+C:\skb\Rivals.csproj\bin\Debug\Rivals.exe
+C:\skb\Rivals.csproj\bin\Debug\Rivals.pdb
+C:\skb\Rivals.csproj\bin\Debug\nunit.framework.dll
+C:\skb\Rivals.csproj\obj\Debug\Rivals.csprojAssemblyReference.cache
+C:\skb\Rivals.csproj\obj\Debug\Rivals.Properties.Resources.resources
+C:\skb\Rivals.csproj\obj\Debug\Rivals.csproj.GenerateResource.cache
+C:\skb\Rivals.csproj\obj\Debug\Rivals.csproj.CoreCompileInputs.cache
+C:\skb\Rivals.csproj\obj\Debug\Rivals.csproj.CopyComplete
+C:\skb\Rivals.csproj\obj\Debug\Rivals.exe
+C:\skb\Rivals.csproj\obj\Debug\Rivals.pdb
