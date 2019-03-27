@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -9,61 +9,41 @@ using System.Threading.Tasks;
 namespace Rivals
 {
    public class RivalsTask
-   {
-      private static HashSet<Point> _visited;
-      private static Dictionary<Point, int> _distance;
-      private static Queue<Point>[] _visit;
-
+   {          
       public static IEnumerable<OwnedLocation> AssignOwners(Map map)
       {
-         _visit = new Queue<Point>[map.Players.Length];
-         _visited = new HashSet<Point>();
-         _distance = new Dictionary<Point, int>();
+         var visited = new HashSet<Point>();
+         var distance = new Dictionary<Point, int>();
+         var visit = new Queue<KeyValuePair<Point, int>>(map.Players.Select((x, i) => new KeyValuePair<Point, int>(x, i)));
 
-         foreach (var player in Bfs(map))
-            yield return player;
-      }
-
-      private static IEnumerable<OwnedLocation> Bfs(Map map)
-      {
-         while (true)
+         while(true)
          {
-            for (int i = 0; i < map.Players.Length; i++)
+            if (!visit.Any()) yield break; 
+            var node = visit.Dequeue();
+            if (!distance.ContainsKey(node.Key)) distance[node.Key] = 0;
+            yield return new OwnedLocation(node.Value, node.Key, distance[node.Key]);
+            visited.Add(node.Key);
+            var ee = Nodes(node.Key, distance).GetEnumerator();
+
+            while (ee.MoveNext())
             {
-               var start = map.Players[i];
-               if (!_distance.ContainsKey(start))
-               {
-                  _visit[i] = new Queue<Point>();
-                  _visit[i].Enqueue(start);
-                  _distance[start] = 0;
-                  _visited.Add(start);
-                  yield return new OwnedLocation(i, start, 0);
-               }
-
-               if (_visit[i].Count == 0) continue;
-               var node = _visit[i].Dequeue();
-               foreach (var next in Nodes(node))
-               {
-                  if (!map.InBounds(next)) continue;
-                  if (map.Maze[next.X, next.Y] != MapCell.Empty) continue;
-                  if (_visited.Contains(next)) continue;
-                  if (_visit[i].Contains(next)) continue;
-                  _visit[i].Enqueue(next);
-                  _visited.Add(next);
-                  yield return new OwnedLocation(i, next, _distance[next]);
-               }
-
-               if (_visit.All(x=>x.Count == 0)) yield break;
+               var next = ee.Current;
+               if (!map.InBounds(next)) continue;
+               if (map.Maze[next.X, next.Y] != MapCell.Empty) continue;
+               if (visited.Contains(next)) continue;
+               var player = new KeyValuePair<Point, int>(next, node.Value);
+               if (visit.Contains(player)) continue;
+               visit.Enqueue(player);
+               visited.Add(next);
             }
          }
-      }
+      }     
 
-      private static IEnumerable<Point> Nodes(Point point)
+      private static IEnumerable<Point> Nodes(Point point, IDictionary<Point, int> distance)
       {
          for (var dy = 1; dy >= -1; dy--)
             for (var dx = 1; dx >= -1; dx--)
-               if (dx != 0 && dy != 0)
-                  continue;
+               if (dx != 0 && dy != 0);
                else
                {
                   var next = new Point
@@ -72,7 +52,7 @@ namespace Rivals
                      Y = point.Y + dy
                   };
                   if(next.Equals(point)) continue;
-                  _distance[next] = _distance[point] + 1;
+                  distance[next] = distance[point] + 1;
                   yield return next;
                }
       }
